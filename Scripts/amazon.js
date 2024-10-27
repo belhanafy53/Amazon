@@ -1,6 +1,6 @@
 import { cart , addcart,updatecartquantity} from "../data/cart.js";
 import {products} from "../data/products.js";
-
+import { formatCurrency } from "../Utils/money.js";
 let productsHTML ='';
 products.forEach((product) => {
     productsHTML += ` 
@@ -21,12 +21,11 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-          $${product.pricecents / 10}
-            $10.90
+          $${formatCurrency(product.priceCents)}
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -47,7 +46,7 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-name="${product.id}" ">
+          <button class="add-to-cart-button button-primary js-add-to-cart" data-product-id="${product.id}" ">
             Add to Cart
           </button>
         </div>`
@@ -56,17 +55,16 @@ products.forEach((product) => {
 
 })
 
-
 //console.log(productsHTML);
 document.querySelector('.js-product-grid').innerHTML = productsHTML;
-
 document.querySelectorAll('.js-add-to-cart').forEach((button)=>{
-button.addEventListener('click',()=>{
-  
-  const productID =  button.dataset.productID;
-  addcart(productID);
-  updatecartquantity();
-  
-  
-});
+  button.addEventListener('click', ()=>{
+const productId = button.dataset.productId;
+//console.log(productId);
+const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
+let quantitySelect = Number(quantitySelector.value);
+console.log(quantitySelect);
+addcart(productId,quantitySelect);
+updatecartquantity(productId);
+  });
 });
