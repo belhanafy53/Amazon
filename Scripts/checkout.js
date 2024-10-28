@@ -1,30 +1,32 @@
-import { cart,removeFromCart,updatecartquantity} from "../data/cart.js";
+import {
+  cart,
+  removeFromCart,
+  updatecartquantity,
+  removeNFromCart,
+} from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "../Utils/money.js";
 
-
-let cartsummeryHTML ='';
+let cartsummeryHTML = "";
 //console.log(cart[1]);
-cart.forEach((cartItem)=>{
-  console.log(cartItem);
+cart.forEach((cartItem) => {
+  // console.log(cartItem);
   let productid = cartItem.productid;
-     
-  let matchingProduct;
-       
-       
-  products.forEach((product)=>{
-    console.log(product);
-  if (product.id === productid){
-    matchingProduct = product;
-     };
-           
-        });
-            //document.querySelector('.').innerHTML = '';
 
-    
-              cartsummeryHTML +=
-              `
-          <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
+  let matchingProduct;
+
+  products.forEach((product) => {
+    // console.log(product);
+    if (product.id === productid) {
+      matchingProduct = product;
+    }
+  });
+  //document.querySelector('.').innerHTML = '';
+
+  cartsummeryHTML += `
+          <div class="cart-item-container js-cart-item-container-${
+            matchingProduct.id
+          }">
             <div class="delivery-date">
               Delivery date: Tuesday, June 21
             </div>
@@ -42,12 +44,16 @@ cart.forEach((cartItem)=>{
                 </div>
                 <div class="product-quantity">
                   <span>
-                    Quantity: <span class="quantity-label">${cartItem.Quantity}</span>
+                    Quantity: <span class="quantity-label">${
+                      cartItem.Quantity
+                    }</span>
                   </span>
                   <span class="update-quantity-link link-primary">
                     Update
                   </span>
-                  <span class="delete-quantity-link link-primary js-delete-quantity" data-product-id =${matchingProduct.id}>
+                  <span class="delete-quantity-link link-primary js-delete-quantity" data-product-id =${
+                    matchingProduct.id
+                  }>
                     Delete
                   </span>
                 </div>
@@ -101,22 +107,22 @@ cart.forEach((cartItem)=>{
           </div>
 
 `;
-
 });
-document.querySelector('.js-order-summery').innerHTML = cartsummeryHTML;
+document.querySelector(".js-order-summery").innerHTML = cartsummeryHTML;
 //console.log(cartsummeryHTML);
 
-document.querySelectorAll('.js-delete-quantity')
-.forEach((link)=>{
-link.addEventListener('click',()=>{
-const productId = link.dataset.productId;
+document.querySelectorAll(".js-delete-quantity").forEach((link) => {
+  link.addEventListener("click", () => {
+    const productId = link.dataset.productId;
 
-console.log(productId);
-removeFromCart(productId);
-
-
-const container = document.querySelector(`.js-cart-item-container-${productId}`);
-//console.log(container);
-container.remove();
-});
+    removeNFromCart(productId);
+//updatecartquantity();
+//console.log(cartQuantity);
+//document.querySelector(".js-return-to-home-link").innerHTML = cartQuantity;
+    const container = document.querySelector(
+      `.js-cart-item-container-${productId}`
+    );
+    //console.log(container);
+    container.remove();
+  });
 });
